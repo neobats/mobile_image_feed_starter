@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { ViewPropTypes } from "react-native";
 import CardList from "../components/CardList";
 import { fetchImages } from "../utils/api";
 
-const Feed = ({ style } = { style: null }) => {
+const Feed = (props = { style: null }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [items, setItems] = useState([]);
@@ -23,9 +24,14 @@ const Feed = ({ style } = { style: null }) => {
     })();
   }, []);
 
-  return <CardList items={items} />;
+  return <CardList {...props} items={items} />;
 };
 
-Feed.propTypes = ViewPropTypes.style;
+Feed.propTypes = {
+  style: ViewPropTypes.style,
+  commentsForItem: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+    .isRequired,
+  onPressComments: PropTypes.func.isRequired,
+};
 
 export default Feed;
